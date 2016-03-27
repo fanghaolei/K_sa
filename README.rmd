@@ -1,0 +1,9 @@
+---
+title: "Shelter Animal Outcomes"
+author: "Mike Fang"
+date: "March 26, 2016"
+output: html_document
+---
+This repo is created for the Kaggle competition: [Shelter Animal Outcomes](https://www.kaggle.com/c/shelter-animal-outcomes)
+
+Xgboost scored 0.73025.
