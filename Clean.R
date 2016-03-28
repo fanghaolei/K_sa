@@ -13,19 +13,29 @@ return(count)
 clean <- function(df){
     dt <- data.table(df)
     # parse names
-    print("simplifying names...")
+    cat("parsing names...\n")
     dt[, INI := substr(Name, 1, 1)]
-    dt[INI == "3", INI := "B"]
-    dt[INI == "'", INI := "S"]
-    dt[INI == "0", ]
-    dt[INI == " ", INI := c("J", "M")]
+    dt[INI == "3", Name := "Buster"]
+    dt[INI == "'", Name := "Stache"]
+    dt[INI == " ", Name := c("Joanie", "Mario")]
+    dt[, INI := substr(Name, 1, 1)]
     
+    # name is common or not? by frequency?
+    cat("sorting nanes into frequency groups...\n")
+    n_freq <- vector("numeric", length = nrow(dt))
+    n_table <- table(dt[, Name])
+    for(i in seq_along(dt[, Name])){
+        n_freq[i] <- n_table[dt[i, Name]]
+    }
+    dt[, name_f := .(n_freq/nrow(dt))]
+    dt[is.na(name_f), name_f := -1] #xgboost can handle this
     # create a new feature named 1:Yes, 0:No
+    cat("simplifying names...\n")
     dt[INI == "", named := 0]
     dt[INI != "", named := 1]
     
     # parse date
-    print("parsing date...")
+    cat("parsing date...\n")
     dt[, DateTime:= ymd_hms(DateTime)]
     dt[, time := .(hour(DateTime) + minute(DateTime)/60)]
     dt[, year := factor(lubridate::year(DateTime), ordered = T)]
@@ -34,7 +44,7 @@ clean <- function(df){
     dt[, weekday := lubridate::wday(DateTime, label = T)]
     
     # parse sex and status
-    print("parsing sex and status...")
+    cat("parsing sex and status...\n")
     dt[, sex := "Unknown"]
     dt[SexuponOutcome %like% "Male", sex := "Male"]
     dt[SexuponOutcome %like% "Female", sex := "Female"]
@@ -45,7 +55,7 @@ clean <- function(df){
     dt[SexuponOutcome %like% "Intact", status := "Intact"]
     
     # form age in days
-    print("transform age into days...")
+    cat("transform age into days...\n")
     dt[AgeuponOutcome == "", AgeuponOutcome := "unknown unknown"]
     parsed_age <- do.call(rbind, sapply(dt[, AgeuponOutcome], strsplit, " "))
     dt[, c("num", "unit") := .(parsed_age[, 1], parsed_age[, 2])]
@@ -56,31 +66,35 @@ clean <- function(df){
     dt[unit == "unknown", age := NA]
     
     # paring breed
-    print("dividing breed groups...")
+    cat("dividing breed groups...\n")
     dt[Breed %like% "Mix", Breed := "Mix"]
     dt[!Breed %like% "Mix", Breed := "Pure"]
     
     # simplify color
-    print("simplifying colors into numbers...")
+    cat("simplifying colors into numbers...\n")
     color_count <- vector("numeric", length = nrow(dt))
     for(i in seq_along(dt[, Color])){
         color_count[i] <- word_count(dt[i, Color])
     }
     dt[, color := .(color_count)]
     
+    # further categorizing color.....
+    
+    
+    
+    
+    
     # drop orginal features
-    print("dropping orginal features...")
-    
-    
+    cat("dropping orginal features...\n")
     if("OutcomeType" %in% colnames(df)){
         print("training set")
-        dt <- dt[, .(OutcomeType, AnimalType, Breed, named, year, month, 
+        dt <- dt[, .(OutcomeType, AnimalType, Breed, named, name_f, year, month, 
                      day, weekday, age, time, sex, status, color)]
         to_factors <- c("OutcomeType", "AnimalType", "Breed", 
                         "named",  "sex", "status")
     } else {
         print("testing set")
-        dt <- dt[, .(AnimalType, Breed, named, year, month, day, weekday, 
+        dt <- dt[, .(AnimalType, Breed, named, name_f, year, month, day, weekday, 
                      age, time, sex, status, color)]
         to_factors <- c("AnimalType", "Breed", 
                         "named",  "sex", "status")
@@ -93,7 +107,7 @@ clean <- function(df){
     }
     
     for_imp <- which(is.na(dt), arr.ind =T)
-    print("these missing values need to be imputed: ")
+    cat("these missing values need to be imputed: \n")
     print(for_imp)
 return(dt)
 }
