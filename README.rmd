@@ -12,3 +12,7 @@ It seemed that stack random forest and xgboost predictiions can greatly improve 
 Current score: .69689.
 
 Updated Modeltrain.R for ensembling.
+
+Updated Clean.R: I think I calculated name and color frequency used combined train \& test data, which is a violation of the rule. Now updated using train data only. 
+
+Updated clean_original.R: I actually ended up using this original feature set. 
