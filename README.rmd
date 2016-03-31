@@ -7,3 +7,8 @@ output: html_document
 This repo is created for the Kaggle competition: [Shelter Animal Outcomes](https://www.kaggle.com/c/shelter-animal-outcomes)
 
 Xgboost scored 0.73025.
+
+It seemed that stack random forest and xgboost predictiions can greatly improve performance.
+Current score: .69689.
+
+Updated Modeltrain.R for ensembling.
