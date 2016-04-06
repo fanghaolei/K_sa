@@ -8,13 +8,9 @@ This repo is created for the Kaggle competition: [Shelter Animal Outcomes](https
 
 This data set has some causality issues which really frustrated me, and I probably won't update this repo anymore. The time scales are outtake features which make  them overly powerful in many models, but they don't resolve any real-world predictive problems.
 
-Because if you know what is going to happen to an animal at a given time, say `transfer' at 9 am, other features won't matter. This data would be much better if they could provide intake time and some additional features of the animals themselves, such as temperament, size, etc. 
+Because if you know what is going to happen to an animal at a given time, say `transfer' at 9 am, other features won't matter. This data would be much better if they could provide intake time and some additional features of the animals themselves, such as temperament and size. 
 
-I did this project in memory of my cat 司令 (commander). My girlfriend and I had to send him back to the shelter due to relocation. He was a great company and we've been missing him very much. 
-
-Well, given the data as it is, he's probably been transferred to another shelter or been adopted. (I hope the later!)
-
-Here is a picture of him:
+My cat 司令 (commander):
 ![司令](https://raw.githubusercontent.com/fhlgood/K_sa/master/cat.PNG)
 
 It seemed that stacking random forest and xgboost predictions can greatly improve performance.
