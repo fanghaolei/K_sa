@@ -10,6 +10,15 @@ This data set has some causality issues which really frustrated me, and I probab
 
 Because if you know what is going to happen to an animal at a given time, say `transfer' at 9 am, other features won't matter. This data would be much better if they could provide intake time and some additional features of the animals themselves, such as temperament and size. 
 
+Here are the plots for time features:
+
+By hours in a day
+![daycylce](https://raw.githubusercontent.com/fhlgood/K_sa/master/daycycle.png)
+
+By all dates
+![dates](https://raw.githubusercontent.com/fhlgood/K_sa/master/byDate.png)
+
+
 My cat 司令 (commander):
 ![司令](https://raw.githubusercontent.com/fhlgood/K_sa/master/cat.PNG)
 
